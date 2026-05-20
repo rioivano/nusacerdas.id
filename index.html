@@ -1566,24 +1566,33 @@
     position: relative;
     aspect-ratio: 4/3;
     border-radius: 24px;
-    overflow: hidden;
-    box-shadow: 0 50px 100px rgba(200, 15, 46, 0.35), 0 20px 60px rgba(0,0,0,0.5);
+    overflow: visible;
+    /* box-shadow: 0 50px 100px rgba(200, 15, 46, 0.35), 0 20px 60px rgba(0,0,0,0.5); */
     transform-style: preserve-3d;
     perspective: 1500px;
   }
   .quiz-mockup img {
-    width: 100%; height: 100%;
-    object-fit: cover;
+    position: absolute;
+    left: 0; top: 0;
+    opacity: 0;
+    width: 100%; 
+    height: 100%;
+    object-fit: contain;
     transform: scale(var(--quiz-img-scale, 1.04));
-    transition: transform .8s var(--ease-cinematic);
-    will-change: transform;
+    transition: all .8s var(--ease-cinematic);
+    will-change: transform, display;
   }
   .quiz-mockup::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, transparent 60%, rgba(200,15,46,0.15) 100%);
+    /* background: linear-gradient(135deg, transparent 60%, rgba(200,15,46,0.15) 100%); */
     pointer-events: none;
+  }
+
+  .quiz-mockup img.active {
+    
+    opacity: 1;
   }
 
   /* Floating answer badges that "answer" the quiz */
@@ -1613,7 +1622,7 @@
     animation-delay: 0s;
   }
   .quiz-badge.b2 {
-    bottom: -16px; right: -20px;
+    bottom: 90px; left: -20px;
     animation-delay: 1.5s;
     background: var(--red);
     color: var(--white);
@@ -1674,7 +1683,33 @@
     border-color: rgba(200,15,46,0.3);
     transform: translateX(6px);
   }
-
+.button-quiz {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background: linear-gradient(180deg, rgb(59, 4, 4) 20%,#1a0508);
+  width: 100%; 
+  height: 60px;
+  margin-top: 20px;
+  border-radius: 25px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #353535;
+  overflow: hidden;
+}
+.quiz-option{
+  transition: 0.5s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+}
+.quiz-option:hover {
+  transition: 0.5s;
+  background-color: #a00d24;
+}
   /* Icon pops in slightly after the card lands */
   .quiz-feature-icon {
     width: 44px; height: 44px;
@@ -3261,8 +3296,13 @@
     <div class="quiz-showcase">
       <!-- Mockup with floating badges -->
       <div class="quiz-mockup">
-        <img src="assets/NusaSuites- Screenshot/NusaQuiz/alldevice.png" alt="Tampilan NusaQuiz di papan interaktif" />
-        <div class="quiz-badge b1">
+        <div style="position: relative; height: 320px;">
+          <img class="active" id="image-quiz-1" src="assets/NusaSuites- Screenshot/NusaQuiz/alldevice.png" alt="Tampilan NusaQuiz di papan interaktif" />
+          <img id="image-quiz-2" src="assets/NusaSuites- Screenshot/NusaAnatomy/Jantung.png" alt="Tampilan NusaQuiz di papan interaktif" />
+          <img id="image-quiz-3" src="assets/NusaSuites- Screenshot/NusaAnatomy/Kulit.png" alt="Tampilan NusaQuiz di papan interaktif" />
+          <img id="image-quiz-4" src="assets/NusaSuites- Screenshot/NusaAnatomy/Main Menu.png" alt="Tampilan NusaQuiz di papan interaktif" />
+        </div>
+        <!-- <div class="quiz-badge b1">
           <span class="quiz-badge-emoji">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </span>
@@ -3279,6 +3319,12 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           </span>
           +100 Skor
+        </div> -->
+        <div class="button-quiz">
+          <div id="quiz-option-1" class="quiz-option">Cepat</div>
+          <div id="quiz-option-2" class="quiz-option">Pilgan</div>
+          <div id="quiz-option-3" class="quiz-option">Poin</div>
+          <div id="quiz-option-4" class="quiz-option">Misteri</div>
         </div>
       </div>
 
@@ -3637,6 +3683,37 @@
 </footer>
 
 <script>
+  document.querySelector("#quiz-option-1").addEventListener("click", () => {
+    document.querySelector("#image-quiz-1").classList.add("active");
+    
+    document.querySelector("#image-quiz-2").classList.remove("active");
+    document.querySelector("#image-quiz-3").classList.remove("active");
+    document.querySelector("#image-quiz-4").classList.remove("active");
+  });
+  document.querySelector("#quiz-option-2").addEventListener("click", () => {
+    document.querySelector("#image-quiz-2").classList.add("active");
+    
+    document.querySelector("#image-quiz-1").classList.remove("active");
+    document.querySelector("#image-quiz-3").classList.remove("active");
+    document.querySelector("#image-quiz-4").classList.remove("active");
+  });
+  document.querySelector("#quiz-option-3").addEventListener("click", () => {
+    document.querySelector("#image-quiz-3").classList.add("active");
+    
+    document.querySelector("#image-quiz-2").classList.remove("active");
+    document.querySelector("#image-quiz-1").classList.remove("active");
+    document.querySelector("#image-quiz-4").classList.remove("active");
+  });
+  document.querySelector("#quiz-option-4").addEventListener("click", () => {
+    document.querySelector("#image-quiz-4").classList.add("active");
+    
+    document.querySelector("#image-quiz-2").classList.remove("active");
+    document.querySelector("#image-quiz-3").classList.remove("active");
+    document.querySelector("#image-quiz-1").classList.remove("active");
+  });
+
+
+
   /* === Reveal-on-scroll === */
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -4112,7 +4189,6 @@
     }, { threshold: 0.2 });
     io.observe(list);
   })();
-
 
 </script>
 
